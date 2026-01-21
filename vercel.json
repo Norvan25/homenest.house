@@ -1,11 +1,4 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/calculators", "destination": "/calculators.html" },
-    { "source": "/net-proceeds", "destination": "/net-proceeds.html" },
-    { "source": "/renovation-roi", "destination": "/renovation-roi.html" },
-    { "source": "/home-value", "destination": "/home-value.html" }
-  ]
+  "version": 2,
+  "public": true
 }
