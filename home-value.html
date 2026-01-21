@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Home Value Estimator | Los Angeles | Homenest</title>
+    <meta name="description" content="Get an instant estimate of your LA home's value. Then request a free professional CMA for a precise valuation.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Animation Classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        
+        /* Hover underline */
+        .hover-underline {
+            position: relative;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #C9A962;
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+        
+        /* Button shine effect */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .btn-shine:hover::after {
+            transform: translateX(100%);
+        }
+        
+        /* Glow effect */
+        .glow-gold:hover {
+            box-shadow: 0 0 40px rgba(201, 169, 98, 0.3);
+        }
+        
+        /* Header scroll effect */
+        .header-scrolled {
+            background: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Number selector buttons */
+        .num-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .num-btn:hover:not(.selected) {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .num-btn.selected {
+            background-color: #C9A962;
+            color: #1A1A1A;
+        }
+        
+        /* Value range animation */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .value-reveal {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+        
+        /* Confidence meter */
+        .confidence-meter {
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #ef4444, #fbbf24, #22c55e);
+        }
+        .confidence-indicator {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            transform: translateX(-50%);
+            transition: left 0.5s ease;
+        }
+        
+        /* Print styles */
+        @media print {
+            header, .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+        }
+    </style>
+</head>
+<body style="font-family: 'Inter', sans-serif; background-color: #1A1A1A; color: #FFFFFF;" class="overflow-x-hidden">
+
+    <!-- Header -->
+    <header id="header" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: linear-gradient(to bottom, rgba(26,26,26,0.9), transparent); transition: all 0.4s ease;" class="px-6 py-5 md:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-xl md:text-2xl tracking-tight font-medium hover:opacity-80 transition-opacity">Homenest</a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="index.html#about" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">About</a>
+                <a href="index.html#process" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Process</a>
+                <a href="calculators.html" class="text-sm text-white transition-colors hover-underline">Tools</a>
+                <a href="index.html#contact" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Contact</a>
+            </nav>
+            <a href="index.html#contact" style="background-color: #C9A962; color: #1A1A1A;" class="text-xs font-semibold px-5 py-2.5 rounded-full hover:opacity-90 transition-all hover:scale-105 btn-shine">Get in Touch</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-28 pb-16 md:pt-36 md:pb-24 px-6 md:px-12">
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Back Link -->
+            <a href="calculators.html" class="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors mb-8 no-print">
+                <span class="iconify" data-icon="lucide:arrow-left" data-width="16" data-height="16"></span>
+                <span class="text-sm">All Calculators</span>
+            </a>
+
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <span style="color: #C9A962;" class="text-xs font-semibold tracking-widest uppercase mb-4 block">Free Tool</span>
+                <h1 style="font-family: 'Playfair Display', serif;" class="text-3xl md:text-4xl lg:text-5xl font-medium leading-tight tracking-tight text-white mb-4">
+                    Home Value Estimator
+                </h1>
+                <p class="text-neutral-400 text-base max-w-lg mx-auto">
+                    Get an instant estimate of your Los Angeles home's value based on location, size, and features.
+                </p>
+            </div>
+
+            <!-- Property Form Section -->
+            <div id="propertyFormSection" style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-2xl p-6 md:p-10">
+                <h2 style="font-family: 'Playfair Display', serif;" class="text-xl md:text-2xl font-medium text-white mb-6">Property Information</h2>
+                
+                <div class="space-y-6">
+                    <!-- Neighborhood/City -->
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Neighborhood / City *</label>
+                        <div class="relative">
+                            <select 
+                                id="neighborhood" 
+                                required
+                                style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                class="w-full px-4 py-4 rounded-xl text-base text-white outline-none focus:border-[#C9A962] transition-all appearance-none cursor-pointer"
+                            >
+                                <option value="">Select a neighborhood</option>
+                                <option value="beverly-hills">Beverly Hills</option>
+                                <option value="santa-monica">Santa Monica</option>
+                                <option value="venice">Venice</option>
+                                <option value="west-hollywood">West Hollywood</option>
+                                <option value="hollywood">Hollywood</option>
+                                <option value="silver-lake">Silver Lake</option>
+                                <option value="echo-park">Echo Park</option>
+                                <option value="downtown-la">Downtown LA</option>
+                                <option value="culver-city">Culver City</option>
+                                <option value="mar-vista">Mar Vista</option>
+                                <option value="pasadena">Pasadena</option>
+                                <option value="glendale">Glendale</option>
+                                <option value="burbank">Burbank</option>
+                                <option value="long-beach">Long Beach</option>
+                                <option value="torrance">Torrance</option>
+                                <option value="other-la">Other LA County</option>
+                            </select>
+                            <span class="iconify absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" data-icon="lucide:chevron-down" data-width="20" data-height="20" style="color: #A0A0A0;"></span>
+                        </div>
+                    </div>
+
+                    <!-- Property Type -->
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Property Type</label>
+                        <div class="relative">
+                            <select 
+                                id="propertyType" 
+                                style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                class="w-full px-4 py-4 rounded-xl text-base text-white outline-none focus:border-[#C9A962] transition-all appearance-none cursor-pointer"
+                            >
+                                <option value="single-family">Single Family Home</option>
+                                <option value="condo">Condo / Co-op</option>
+                                <option value="townhouse">Townhouse</option>
+                            </select>
+                            <span class="iconify absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" data-icon="lucide:chevron-down" data-width="20" data-height="20" style="color: #A0A0A0;"></span>
+                        </div>
+                    </div>
+
+                    <!-- Bedrooms & Bathrooms -->
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-3 block">Bedrooms</label>
+                            <div class="flex gap-2 flex-wrap">
+                                <button type="button" onclick="selectBedrooms(1)" class="num-btn" style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" data-beds="1">1</button>
+                                <button type="button" onclick="selectBedrooms(2)" class="num-btn" style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" data-beds="2">2</button>
+                                <button type="button" onclick="selectBedrooms(3)" class="num-btn selected" style="border: 1px solid rgba(255,255,255,0.1);" data-beds="3">3</button>
+                                <button type="button" onclick="selectBedrooms(4)" class="num-btn" style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" data-beds="4">4</button>
+                                <button type="button" onclick="selectBedrooms(5)" class="num-btn" style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" data-beds="5">5+</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-3 block">Bathrooms</label>
+                            <div class="flex gap-2 flex-wrap">
+                                <button type="button" onclick="selectBathrooms(1)" class="num-btn" style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" data-baths="1">1</button>
+                                <button type="button" onclick="selectBathrooms(2)" class="num-btn selected" style="border: 1px solid rgba(255,255,255,0.1);" data-baths="2">2</button>
+                                <button type="button" onclick="selectBathrooms(3)" class="num-btn" style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" data-baths="3">3</button>
+                                <button type="button" onclick="selectBathrooms(4)" class="num-btn" style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" data-baths="4">4+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Square Footage -->
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Square Footage *</label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="sqft" 
+                                required
+                                style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                class="w-full px-4 py-4 rounded-xl text-base text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                placeholder="e.g. 1,850"
+                            >
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 text-sm">sq ft</span>
+                        </div>
+                    </div>
+
+                    <!-- Year Built -->
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Year Built</label>
+                        <input 
+                            type="number" 
+                            id="yearBuilt" 
+                            value="1985"
+                            min="1900"
+                            max="2025"
+                            style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                            class="w-full px-4 py-4 rounded-xl text-base text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                        >
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        onclick="estimateValue()" 
+                        style="background-color: #C9A962; color: #1A1A1A;" 
+                        class="w-full flex items-center justify-center gap-2 text-sm font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.02] btn-shine glow-gold mt-4"
+                    >
+                        <span class="iconify" data-icon="lucide:home" data-width="18" data-height="18"></span>
+                        Get My Estimate
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section (Hidden initially) -->
+            <div id="resultsSection" class="hidden">
+                
+                <!-- Value Estimate Card -->
+                <div style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-2xl p-6 md:p-10 mb-8">
+                    <div class="text-center mb-8">
+                        <p class="text-neutral-400 text-sm mb-2" id="propertySummary">3 bed, 2 bath, 1,850 sqft in Silver Lake</p>
+                        <span class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-4 block">Estimated Value Range</span>
+                        
+                        <div class="value-reveal">
+                            <p style="font-family: 'Playfair Display', serif;" class="text-3xl md:text-4xl font-medium text-white mb-2" id="valueRange">$0 — $0</p>
+                            <div class="inline-block px-4 py-2 rounded-full" style="background-color: rgba(201,169,98,0.1);">
+                                <p class="text-sm" style="color: #C9A962;">
+                                    Median Estimate: <span class="font-semibold" id="medianValue">$0</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confidence Indicator -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs uppercase tracking-widest text-neutral-500">Estimate Confidence</span>
+                            <span class="text-sm text-neutral-400" id="confidenceText">Moderate</span>
+                        </div>
+                        <div class="relative">
+                            <div class="confidence-meter"></div>
+                            <div class="confidence-indicator absolute top-1/2 -translate-y-1/2" id="confidenceMarker" style="left: 50%;"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-neutral-500 mt-2">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+
+                    <!-- How We Calculated -->
+                    <div style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-xl p-5 mb-6">
+                        <button onclick="toggleAccordion('howCalculated')" class="w-full flex items-center justify-between text-left">
+                            <span class="text-sm font-medium text-white flex items-center gap-2">
+                                <span class="iconify" data-icon="lucide:info" data-width="16" data-height="16" style="color: #C9A962;"></span>
+                                How we calculated this
+                            </span>
+                            <span class="iconify transition-transform" data-icon="lucide:chevron-down" data-width="18" data-height="18" style="color: #A0A0A0;" id="howCalculatedIcon"></span>
+                        </button>
+                        <div id="howCalculatedContent" class="hidden mt-4 text-sm text-neutral-400 space-y-2">
+                            <p>This estimate is based on:</p>
+                            <ul class="list-disc list-inside space-y-1 ml-2">
+                                <li>Average price per square foot in your neighborhood</li>
+                                <li>Property size and bedroom/bathroom configuration</li>
+                                <li>Home age adjustments</li>
+                                <li>Property type factors</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Factors Not Considered -->
+                    <div style="background-color: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2);" class="rounded-xl p-5">
+                        <p class="text-sm font-medium text-yellow-400 flex items-center gap-2 mb-3">
+                            <span class="iconify" data-icon="lucide:alert-triangle" data-width="16" data-height="16"></span>
+                            This estimate does NOT account for:
+                        </p>
+                        <ul class="text-sm text-neutral-300 space-y-2">
+                            <li class="flex items-start gap-2">
+                                <span class="iconify flex-shrink-0 mt-0.5" data-icon="lucide:x" data-width="14" data-height="14" style="color: #fbbf24;"></span>
+                                Your home's actual condition
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="iconify flex-shrink-0 mt-0.5" data-icon="lucide:x" data-width="14" data-height="14" style="color: #fbbf24;"></span>
+                                Recent renovations or updates
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="iconify flex-shrink-0 mt-0.5" data-icon="lucide:x" data-width="14" data-height="14" style="color: #fbbf24;"></span>
+                                View, noise, or location specifics
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="iconify flex-shrink-0 mt-0.5" data-icon="lucide:x" data-width="14" data-height="14" style="color: #fbbf24;"></span>
+                                Unique architectural features
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CMA Request Section -->
+                <div style="background-color: #242424; border: 2px solid #C9A962;" class="rounded-2xl p-6 md:p-10 mb-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div style="background-color: rgba(201,169,98,0.2);" class="w-12 h-12 rounded-full flex items-center justify-center">
+                            <span class="iconify" data-icon="lucide:home" data-width="24" data-height="24" style="color: #C9A962;"></span>
+                        </div>
+                        <h3 style="font-family: 'Playfair Display', serif;" class="text-xl font-medium text-white">Want a Precise Valuation?</h3>
+                    </div>
+                    
+                    <p class="text-neutral-300 text-sm mb-6">
+                        Automated estimates can be off by <strong>10-20%</strong>. A professional Comparative Market Analysis (CMA) considers recent sales, your home's specific condition, and current market dynamics.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                        <div class="flex items-center gap-2 text-sm text-neutral-300">
+                            <span class="iconify" data-icon="lucide:check-circle" data-width="18" data-height="18" style="color: #22c55e;"></span>
+                            100% Free
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-neutral-300">
+                            <span class="iconify" data-icon="lucide:check-circle" data-width="18" data-height="18" style="color: #22c55e;"></span>
+                            No Obligation
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-neutral-300">
+                            <span class="iconify" data-icon="lucide:check-circle" data-width="18" data-height="18" style="color: #22c55e;"></span>
+                            Response in 24hrs
+                        </div>
+                    </div>
+
+                    <!-- CMA Form -->
+                    <form id="cmaForm" class="space-y-4" onsubmit="submitCMARequest(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Your Name *</label>
+                                <input 
+                                    type="text" 
+                                    id="cmaName"
+                                    required
+                                    style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                    class="w-full px-4 py-3.5 rounded-xl text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                    placeholder="Your name"
+                                >
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Email *</label>
+                                <input 
+                                    type="email" 
+                                    id="cmaEmail"
+                                    required
+                                    style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                    class="w-full px-4 py-3.5 rounded-xl text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                    placeholder="you@email.com"
+                                >
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Phone</label>
+                                <input 
+                                    type="tel" 
+                                    id="cmaPhone"
+                                    style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                    class="w-full px-4 py-3.5 rounded-xl text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                    placeholder="(323) 472-7059"
+                                >
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Best Time to Contact</label>
+                                <div class="relative">
+                                    <select 
+                                        id="cmaTime"
+                                        style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                        class="w-full px-4 py-3.5 rounded-xl text-sm text-white outline-none focus:border-[#C9A962] transition-all appearance-none cursor-pointer"
+                                    >
+                                        <option value="morning">Morning (9am - 12pm)</option>
+                                        <option value="afternoon">Afternoon (12pm - 5pm)</option>
+                                        <option value="evening">Evening (5pm - 8pm)</option>
+                                        <option value="anytime">Anytime</option>
+                                    </select>
+                                    <span class="iconify absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" data-icon="lucide:chevron-down" data-width="16" data-height="16" style="color: #A0A0A0;"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Tell Us About Your Home (Optional)</label>
+                            <textarea 
+                                id="cmaDetails"
+                                rows="3"
+                                style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                class="w-full px-4 py-3.5 rounded-xl text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all resize-none"
+                                placeholder="Any recent updates, unique features, or specific questions?"
+                            ></textarea>
+                        </div>
+                        <button 
+                            type="submit"
+                            style="background-color: #C9A962; color: #1A1A1A;" 
+                            class="w-full flex items-center justify-center gap-2 text-sm font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.02] btn-shine glow-gold"
+                        >
+                            <span class="iconify" data-icon="lucide:send" data-width="18" data-height="18"></span>
+                            Request Free CMA — No Obligation
+                        </button>
+                    </form>
+
+                    <!-- Success Message (hidden initially) -->
+                    <div id="cmaSuccess" class="hidden text-center py-8">
+                        <div style="background-color: rgba(34, 197, 94, 0.1);" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="iconify" data-icon="lucide:check" data-width="32" data-height="32" style="color: #22c55e;"></span>
+                        </div>
+                        <h4 style="font-family: 'Playfair Display', serif;" class="text-xl font-medium text-white mb-2">Request Sent!</h4>
+                        <p class="text-neutral-400 text-sm">Suzanna will be in touch within 24 hours with your personalized CMA.</p>
+                    </div>
+                </div>
+
+                <!-- Start Over -->
+                <button 
+                    onclick="resetEstimator()" 
+                    class="w-full text-center text-neutral-400 hover:text-white transition-colors text-sm no-print"
+                >
+                    ← Try a Different Property
+                </button>
+            </div>
+
+            <!-- Disclaimer -->
+            <p class="text-neutral-500 text-xs text-center mt-8 leading-relaxed">
+                * This is an automated estimate based on average market data and should not be considered an appraisal or guaranteed home value. Actual market value depends on many factors including condition, specific location, recent comparable sales, and current market conditions. For an accurate valuation, request a professional CMA.
+            </p>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background-color: #141414; border-top: 1px solid rgba(255,255,255,0.05);" class="py-12 px-6 md:px-12 no-print">
+        <div class="max-w-7xl mx-auto text-center">
+            <a href="index.html" style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-xl tracking-tight font-medium mb-2 inline-block hover:opacity-80 transition-opacity">Homenest</a>
+            <p class="text-neutral-600 text-xs">© 2025 Homenest by Suzanna Saharyan. Century 21 Real Estate.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // LA Price Per Square Foot Data
+        const LA_PRICE_PER_SQFT = {
+            "beverly-hills": { low: 1200, mid: 1600, high: 2200 },
+            "santa-monica": { low: 1100, mid: 1450, high: 1900 },
+            "venice": { low: 1100, mid: 1500, high: 2000 },
+            "west-hollywood": { low: 900, mid: 1200, high: 1600 },
+            "hollywood": { low: 700, mid: 950, high: 1300 },
+            "silver-lake": { low: 750, mid: 1000, high: 1350 },
+            "echo-park": { low: 650, mid: 850, high: 1100 },
+            "downtown-la": { low: 600, mid: 850, high: 1200 },
+            "culver-city": { low: 800, mid: 1050, high: 1400 },
+            "mar-vista": { low: 850, mid: 1100, high: 1450 },
+            "pasadena": { low: 600, mid: 800, high: 1100 },
+            "glendale": { low: 550, mid: 750, high: 1000 },
+            "burbank": { low: 550, mid: 700, high: 950 },
+            "long-beach": { low: 500, mid: 700, high: 950 },
+            "torrance": { low: 550, mid: 750, high: 1000 },
+            "other-la": { low: 450, mid: 650, high: 900 },
+        };
+
+        let selectedBedrooms = 3;
+        let selectedBathrooms = 2;
+
+        // Format currency
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0,
+            }).format(num);
+        }
+
+        // Parse number
+        function parseNumber(str) {
+            return parseInt(str.replace(/[^0-9]/g, ''), 10) || 0;
+        }
+
+        // Select bedrooms
+        function selectBedrooms(num) {
+            selectedBedrooms = num;
+            document.querySelectorAll('[data-beds]').forEach(btn => {
+                btn.classList.remove('selected');
+                btn.style.backgroundColor = '#1A1A1A';
+            });
+            document.querySelector(`[data-beds="${num}"]`).classList.add('selected');
+            document.querySelector(`[data-beds="${num}"]`).style.backgroundColor = '';
+        }
+
+        // Select bathrooms
+        function selectBathrooms(num) {
+            selectedBathrooms = num;
+            document.querySelectorAll('[data-baths]').forEach(btn => {
+                btn.classList.remove('selected');
+                btn.style.backgroundColor = '#1A1A1A';
+            });
+            document.querySelector(`[data-baths="${num}"]`).classList.add('selected');
+            document.querySelector(`[data-baths="${num}"]`).style.backgroundColor = '';
+        }
+
+        // Estimate value
+        function estimateValue() {
+            const neighborhood = document.getElementById('neighborhood').value;
+            const propertyType = document.getElementById('propertyType').value;
+            const sqft = parseNumber(document.getElementById('sqft').value);
+            const yearBuilt = parseInt(document.getElementById('yearBuilt').value) || 1985;
+
+            // Validation
+            if (!neighborhood) {
+                alert('Please select a neighborhood');
+                return;
+            }
+            if (sqft < 100) {
+                alert('Please enter a valid square footage');
+                return;
+            }
+
+            const priceData = LA_PRICE_PER_SQFT[neighborhood] || LA_PRICE_PER_SQFT["other-la"];
+
+            // Base calculation
+            let lowEstimate = sqft * priceData.low;
+            let midEstimate = sqft * priceData.mid;
+            let highEstimate = sqft * priceData.high;
+
+            // Age adjustment (-5% to +5%)
+            const currentYear = new Date().getFullYear();
+            const age = currentYear - yearBuilt;
+            const ageMultiplier = age < 10 ? 1.05 : age > 50 ? 0.95 : 1;
+
+            // Bedroom/bathroom ratio adjustment
+            const bedBathRatio = selectedBathrooms / selectedBedrooms;
+            const ratioMultiplier = bedBathRatio >= 1 ? 1.03 : bedBathRatio < 0.5 ? 0.97 : 1;
+
+            // Property type adjustment
+            const typeMultiplier = propertyType === 'condo' ? 0.9 : 
+                                   propertyType === 'townhouse' ? 0.95 : 1;
+
+            // Apply adjustments
+            const totalMultiplier = ageMultiplier * ratioMultiplier * typeMultiplier;
+
+            lowEstimate = Math.round(lowEstimate * totalMultiplier / 1000) * 1000;
+            midEstimate = Math.round(midEstimate * totalMultiplier / 1000) * 1000;
+            highEstimate = Math.round(highEstimate * totalMultiplier / 1000) * 1000;
+
+            // Get neighborhood display name
+            const neighborhoodSelect = document.getElementById('neighborhood');
+            const neighborhoodName = neighborhoodSelect.options[neighborhoodSelect.selectedIndex].text;
+
+            // Update display
+            document.getElementById('propertySummary').textContent = 
+                `${selectedBedrooms} bed, ${selectedBathrooms} bath, ${sqft.toLocaleString()} sqft in ${neighborhoodName}`;
+            
+            document.getElementById('valueRange').textContent = 
+                `${formatCurrency(lowEstimate)} — ${formatCurrency(highEstimate)}`;
+            
+            document.getElementById('medianValue').textContent = formatCurrency(midEstimate);
+
+            // Set confidence (always moderate for automated estimates)
+            document.getElementById('confidenceText').textContent = 'Moderate';
+            document.getElementById('confidenceMarker').style.left = '50%';
+
+            // Show results
+            document.getElementById('propertyFormSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle accordion
+        function toggleAccordion(id) {
+            const content = document.getElementById(id + 'Content');
+            const icon = document.getElementById(id + 'Icon');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Submit CMA request
+        function submitCMARequest(event) {
+            event.preventDefault();
+            
+            // In a real implementation, this would send data to a backend
+            // For now, just show success message
+            
+            document.getElementById('cmaForm').classList.add('hidden');
+            document.getElementById('cmaSuccess').classList.remove('hidden');
+        }
+
+        // Reset estimator
+        function resetEstimator() {
+            document.getElementById('propertyFormSection').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('cmaForm').classList.remove('hidden');
+            document.getElementById('cmaSuccess').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Format sqft input
+        document.getElementById('sqft').addEventListener('blur', function() {
+            const value = parseNumber(this.value);
+            if (value > 0) {
+                this.value = value.toLocaleString();
+            }
+        });
+        document.getElementById('sqft').addEventListener('focus', function() {
+            this.value = this.value.replace(/,/g, '');
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+    </script>
+
+</body>
+</html>

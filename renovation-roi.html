@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Renovation ROI Calculator | Which Upgrades Pay Off | Homenest</title>
+    <meta name="description" content="Discover which home improvements give the best return on investment. Data-driven recommendations for LA homeowners looking to maximize value.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Animation Classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        
+        /* Hover underline */
+        .hover-underline {
+            position: relative;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #C9A962;
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+        
+        /* Button shine effect */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .btn-shine:hover::after {
+            transform: translateX(100%);
+        }
+        
+        /* Glow effect */
+        .glow-gold:hover {
+            box-shadow: 0 0 40px rgba(201, 169, 98, 0.3);
+        }
+        
+        /* Header scroll effect */
+        .header-scrolled {
+            background: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Category tabs */
+        .category-tab {
+            transition: all 0.3s ease;
+        }
+        .category-tab.active {
+            background-color: #C9A962;
+            color: #1A1A1A;
+        }
+        .category-tab:not(.active):hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Renovation card */
+        .renovation-card {
+            transition: all 0.3s ease;
+        }
+        .renovation-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(201, 169, 98, 0.5);
+        }
+        .renovation-card.selected {
+            border-color: #C9A962;
+            background-color: rgba(201, 169, 98, 0.1);
+        }
+        
+        /* ROI Badge */
+        .roi-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .roi-badge.excellent {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        .roi-badge.good {
+            background-color: rgba(201, 169, 98, 0.2);
+            color: #C9A962;
+        }
+        .roi-badge.moderate {
+            background-color: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+        .roi-badge.low {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        /* Checkbox custom style */
+        .custom-checkbox {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: #1A1A1A;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .custom-checkbox:checked {
+            background-color: #C9A962;
+            border-color: #C9A962;
+        }
+        .custom-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 3px;
+            width: 6px;
+            height: 12px;
+            border: solid #1A1A1A;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        /* Print styles */
+        @media print {
+            header, .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+        }
+    </style>
+</head>
+<body style="font-family: 'Inter', sans-serif; background-color: #1A1A1A; color: #FFFFFF;" class="overflow-x-hidden">
+
+    <!-- Header -->
+    <header id="header" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: linear-gradient(to bottom, rgba(26,26,26,0.9), transparent); transition: all 0.4s ease;" class="px-6 py-5 md:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-xl md:text-2xl tracking-tight font-medium hover:opacity-80 transition-opacity">Homenest</a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="index.html#about" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">About</a>
+                <a href="index.html#process" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Process</a>
+                <a href="calculators.html" class="text-sm text-white transition-colors hover-underline">Tools</a>
+                <a href="index.html#contact" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Contact</a>
+            </nav>
+            <a href="index.html#contact" style="background-color: #C9A962; color: #1A1A1A;" class="text-xs font-semibold px-5 py-2.5 rounded-full hover:opacity-90 transition-all hover:scale-105 btn-shine">Get in Touch</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-28 pb-16 md:pt-36 md:pb-24 px-6 md:px-12">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Back Link -->
+            <a href="calculators.html" class="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors mb-8 no-print">
+                <span class="iconify" data-icon="lucide:arrow-left" data-width="16" data-height="16"></span>
+                <span class="text-sm">All Calculators</span>
+            </a>
+
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <span style="color: #C9A962;" class="text-xs font-semibold tracking-widest uppercase mb-4 block">Seller Tool</span>
+                <h1 style="font-family: 'Playfair Display', serif;" class="text-3xl md:text-4xl lg:text-5xl font-medium leading-tight tracking-tight text-white mb-4">
+                    Renovation ROI Calculator
+                </h1>
+                <p class="text-neutral-400 text-base max-w-lg mx-auto">
+                    Discover which home improvements give you the best return on investment before selling.
+                </p>
+            </div>
+
+            <!-- Home Details Section -->
+            <div id="homeDetailsSection" style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-2xl p-6 md:p-10 mb-8">
+                <h2 style="font-family: 'Playfair Display', serif;" class="text-xl md:text-2xl font-medium text-white mb-6">Your Home Details</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Home Value -->
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Current Home Value</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
+                            <input 
+                                type="text" 
+                                id="homeValue" 
+                                value="850,000"
+                                style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                class="w-full pl-8 pr-4 py-4 rounded-xl text-base text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                placeholder="850,000"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Home Age -->
+                    <div>
+                        <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Home Age</label>
+                        <div class="relative">
+                            <select 
+                                id="homeAge" 
+                                style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                class="w-full px-4 py-4 rounded-xl text-base text-white outline-none focus:border-[#C9A962] transition-all appearance-none cursor-pointer"
+                            >
+                                <option value="0-10">0-10 years</option>
+                                <option value="11-20">11-20 years</option>
+                                <option value="21-30" selected>21-30 years</option>
+                                <option value="30+">30+ years</option>
+                            </select>
+                            <span class="iconify absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" data-icon="lucide:chevron-down" data-width="20" data-height="20" style="color: #A0A0A0;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Renovation Selector -->
+            <div id="renovationSelector" style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-2xl p-6 md:p-10 mb-8">
+                <h2 style="font-family: 'Playfair Display', serif;" class="text-xl md:text-2xl font-medium text-white mb-6">Select Renovations to Compare</h2>
+                
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap gap-2 mb-8 no-print">
+                    <button onclick="filterCategory('all')" class="category-tab active px-4 py-2 rounded-full text-sm font-medium" style="border: 1px solid rgba(255,255,255,0.1);">All</button>
+                    <button onclick="filterCategory('exterior')" class="category-tab px-4 py-2 rounded-full text-sm font-medium text-neutral-400" style="border: 1px solid rgba(255,255,255,0.1);">Exterior</button>
+                    <button onclick="filterCategory('interior')" class="category-tab px-4 py-2 rounded-full text-sm font-medium text-neutral-400" style="border: 1px solid rgba(255,255,255,0.1);">Interior</button>
+                    <button onclick="filterCategory('outdoor')" class="category-tab px-4 py-2 rounded-full text-sm font-medium text-neutral-400" style="border: 1px solid rgba(255,255,255,0.1);">Outdoor</button>
+                    <button onclick="filterCategory('systems')" class="category-tab px-4 py-2 rounded-full text-sm font-medium text-neutral-400" style="border: 1px solid rgba(255,255,255,0.1);">Systems</button>
+                    <button onclick="filterCategory('addition')" class="category-tab px-4 py-2 rounded-full text-sm font-medium text-neutral-400" style="border: 1px solid rgba(255,255,255,0.1);">Additions</button>
+                </div>
+
+                <!-- Renovation Cards Grid -->
+                <div id="renovationGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <!-- Cards will be populated by JavaScript -->
+                </div>
+
+                <!-- Selected Count and Calculate Button -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.08);">
+                    <p class="text-neutral-400 text-sm">
+                        <span id="selectedCount">0</span> renovations selected
+                    </p>
+                    <button 
+                        onclick="calculateROI()" 
+                        id="calculateBtn"
+                        disabled
+                        style="background-color: #C9A962; color: #1A1A1A;" 
+                        class="flex items-center justify-center gap-2 text-sm font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.02] btn-shine glow-gold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    >
+                        <span class="iconify" data-icon="lucide:calculator" data-width="18" data-height="18"></span>
+                        Calculate ROI
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section (Hidden initially) -->
+            <div id="resultsSection" class="hidden">
+                <!-- Summary Card -->
+                <div style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-2xl p-6 md:p-10 mb-8">
+                    <h2 style="font-family: 'Playfair Display', serif;" class="text-xl md:text-2xl font-medium text-white mb-6">Your Renovation Analysis</h2>
+                    
+                    <!-- Summary Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div style="background-color: #1A1A1A;" class="rounded-xl p-6 text-center">
+                            <p class="text-xs uppercase tracking-widest text-neutral-500 mb-2">Total Investment</p>
+                            <p style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-3xl font-medium" id="totalInvestment">$0</p>
+                        </div>
+                        <div style="background-color: #1A1A1A;" class="rounded-xl p-6 text-center">
+                            <p class="text-xs uppercase tracking-widest text-neutral-500 mb-2">Expected Value Added</p>
+                            <p style="font-family: 'Playfair Display', serif;" class="text-3xl font-medium text-green-400" id="totalValueAdded">$0</p>
+                        </div>
+                        <div style="background-color: #1A1A1A;" class="rounded-xl p-6 text-center">
+                            <p class="text-xs uppercase tracking-widest text-neutral-500 mb-2">Combined ROI</p>
+                            <p style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-3xl font-medium" id="combinedROI">0%</p>
+                        </div>
+                    </div>
+
+                    <!-- Results Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
+                                    <th class="text-left py-3 text-xs uppercase tracking-widest text-neutral-500 font-medium">Project</th>
+                                    <th class="text-right py-3 text-xs uppercase tracking-widest text-neutral-500 font-medium">Cost</th>
+                                    <th class="text-right py-3 text-xs uppercase tracking-widest text-neutral-500 font-medium">Value Added</th>
+                                    <th class="text-right py-3 text-xs uppercase tracking-widest text-neutral-500 font-medium">ROI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <!-- Rows populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Smart Recommendations -->
+                <div style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-2xl p-6 md:p-10 mb-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div style="background-color: rgba(201,169,98,0.1);" class="w-10 h-10 rounded-full flex items-center justify-center">
+                            <span class="iconify" data-icon="lucide:lightbulb" data-width="20" data-height="20" style="color: #C9A962;"></span>
+                        </div>
+                        <h2 style="font-family: 'Playfair Display', serif;" class="text-xl md:text-2xl font-medium text-white">Smart Recommendations</h2>
+                    </div>
+                    
+                    <div id="recommendations" class="space-y-6">
+                        <!-- Recommendations populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- CTA Section -->
+                <div style="background-color: #242424; border: 1px solid rgba(255,255,255,0.08);" class="rounded-2xl p-8 text-center no-print">
+                    <h3 style="font-family: 'Playfair Display', serif;" class="text-xl font-medium text-white mb-4">Want Personalized Advice for YOUR Home?</h3>
+                    <p class="text-neutral-400 text-sm mb-6 max-w-lg mx-auto">
+                        Every home is unique. Get expert guidance on which renovations will give you the best return in your specific neighborhood and price range.
+                    </p>
+                    <a 
+                        href="index.html#contact" 
+                        style="background-color: #C9A962; color: #1A1A1A;" 
+                        class="inline-flex items-center justify-center gap-2 text-sm font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.02] btn-shine glow-gold"
+                    >
+                        <span class="iconify" data-icon="lucide:phone" data-width="18" data-height="18"></span>
+                        Schedule Free Consultation
+                    </a>
+                </div>
+
+                <!-- Reset Button -->
+                <button 
+                    onclick="resetCalculator()" 
+                    class="w-full text-center text-neutral-400 hover:text-white transition-colors mt-6 text-sm no-print"
+                >
+                    ← Start Over with Different Selections
+                </button>
+            </div>
+
+            <!-- Disclaimer -->
+            <p class="text-neutral-500 text-xs text-center mt-8 leading-relaxed">
+                * ROI data based on Remodeling Magazine's Cost vs Value Report 2024/2025. Actual returns vary by market, property condition, and quality of work. These are national averages; LA market may differ. Consult with a local real estate professional for personalized advice.
+            </p>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background-color: #141414; border-top: 1px solid rgba(255,255,255,0.05);" class="py-12 px-6 md:px-12 no-print">
+        <div class="max-w-7xl mx-auto text-center">
+            <a href="index.html" style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-xl tracking-tight font-medium mb-2 inline-block hover:opacity-80 transition-opacity">Homenest</a>
+            <p class="text-neutral-600 text-xs">© 2025 Homenest by Suzanna Saharyan. Century 21 Real Estate.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Renovation Data (Cost vs Value Report 2024/2025)
+        const RENOVATION_DATA = {
+            "garage-door": {
+                name: "Garage Door Replacement",
+                avgCost: 4513,
+                avgValueAdded: 8751,
+                roi: 194,
+                category: "exterior",
+                description: "Replace existing garage door with new insulated steel door",
+                timeframe: "1-2 days",
+            },
+            "steel-entry-door": {
+                name: "Steel Entry Door Replacement", 
+                avgCost: 2355,
+                avgValueAdded: 4430,
+                roi: 188,
+                category: "exterior",
+                description: "Replace front entry door with new steel door",
+                timeframe: "1 day",
+            },
+            "manufactured-stone-veneer": {
+                name: "Manufactured Stone Veneer",
+                avgCost: 11287,
+                avgValueAdded: 17291,
+                roi: 153,
+                category: "exterior",
+                description: "Add stone veneer to portion of home exterior",
+                timeframe: "3-5 days",
+            },
+            "minor-kitchen-remodel": {
+                name: "Minor Kitchen Remodel",
+                avgCost: 27492,
+                avgValueAdded: 26406,
+                roi: 96,
+                category: "interior",
+                description: "Cabinet refacing, new countertops, updated appliances",
+                timeframe: "3-4 weeks",
+            },
+            "bathroom-remodel-midrange": {
+                name: "Bathroom Remodel (Mid-Range)",
+                avgCost: 25251,
+                avgValueAdded: 18613,
+                roi: 74,
+                category: "interior",
+                description: "Update fixtures, tile, vanity, and lighting",
+                timeframe: "2-3 weeks",
+            },
+            "vinyl-window-replacement": {
+                name: "Vinyl Window Replacement",
+                avgCost: 20482,
+                avgValueAdded: 14922,
+                roi: 73,
+                category: "exterior",
+                description: "Replace all windows with energy-efficient vinyl",
+                timeframe: "2-3 days",
+            },
+            "wood-deck-addition": {
+                name: "Wood Deck Addition",
+                avgCost: 17615,
+                avgValueAdded: 12464,
+                roi: 71,
+                category: "outdoor",
+                description: "Add new wood deck to backyard",
+                timeframe: "1-2 weeks",
+            },
+            "siding-replacement": {
+                name: "Siding Replacement (Fiber Cement)",
+                avgCost: 21937,
+                avgValueAdded: 15415,
+                roi: 70,
+                category: "exterior", 
+                description: "Replace exterior siding with fiber cement",
+                timeframe: "1-2 weeks",
+            },
+            "hvac-conversion": {
+                name: "HVAC Electrification",
+                avgCost: 19621,
+                avgValueAdded: 12962,
+                roi: 66,
+                category: "systems",
+                description: "Convert to electric heat pump system",
+                timeframe: "2-3 days",
+            },
+            "composite-deck": {
+                name: "Composite Deck Addition",
+                avgCost: 24677,
+                avgValueAdded: 15354,
+                roi: 62,
+                category: "outdoor",
+                description: "Add new composite deck to backyard",
+                timeframe: "1-2 weeks",
+            },
+            "bathroom-addition": {
+                name: "Bathroom Addition",
+                avgCost: 63000,
+                avgValueAdded: 32000,
+                roi: 51,
+                category: "addition",
+                description: "Add new full bathroom",
+                timeframe: "4-6 weeks",
+            },
+            "major-kitchen-remodel": {
+                name: "Major Kitchen Remodel",
+                avgCost: 85000,
+                avgValueAdded: 32300,
+                roi: 38,
+                category: "interior",
+                description: "Full kitchen renovation with layout changes",
+                timeframe: "6-8 weeks",
+            },
+            "primary-suite-addition": {
+                name: "Primary Suite Addition",
+                avgCost: 175000,
+                avgValueAdded: 68000,
+                roi: 39,
+                category: "addition",
+                description: "Add new primary bedroom and bathroom",
+                timeframe: "3-4 months",
+            },
+        };
+
+        let selectedRenovations = new Set();
+        let currentCategory = 'all';
+
+        // Format currency
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0,
+            }).format(num);
+        }
+
+        // Parse currency
+        function parseCurrency(str) {
+            return parseInt(str.replace(/[^0-9]/g, ''), 10) || 0;
+        }
+
+        // Get ROI badge class
+        function getROIBadgeClass(roi) {
+            if (roi >= 100) return 'excellent';
+            if (roi >= 70) return 'good';
+            if (roi >= 50) return 'moderate';
+            return 'low';
+        }
+
+        // Render renovation cards
+        function renderRenovationCards() {
+            const grid = document.getElementById('renovationGrid');
+            grid.innerHTML = '';
+
+            Object.entries(RENOVATION_DATA).forEach(([key, data]) => {
+                if (currentCategory !== 'all' && data.category !== currentCategory) return;
+
+                const isSelected = selectedRenovations.has(key);
+                const badgeClass = getROIBadgeClass(data.roi);
+
+                const card = document.createElement('div');
+                card.className = `renovation-card cursor-pointer p-5 rounded-xl ${isSelected ? 'selected' : ''}`;
+                card.style.cssText = 'background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.08);';
+                card.onclick = () => toggleRenovation(key);
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h3 class="font-medium text-white">${data.name}</h3>
+                                <span class="roi-badge ${badgeClass}">${data.roi}% ROI</span>
+                            </div>
+                            <p class="text-neutral-500 text-sm mb-3">${data.description}</p>
+                            <div class="flex flex-wrap gap-4 text-sm">
+                                <div>
+                                    <span class="text-neutral-500">Cost:</span>
+                                    <span class="text-white ml-1">${formatCurrency(data.avgCost)}</span>
+                                </div>
+                                <div>
+                                    <span class="text-neutral-500">Value Added:</span>
+                                    <span class="text-green-400 ml-1">${formatCurrency(data.avgValueAdded)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input 
+                            type="checkbox" 
+                            class="custom-checkbox flex-shrink-0" 
+                            ${isSelected ? 'checked' : ''}
+                            onclick="event.stopPropagation(); toggleRenovation('${key}')"
+                        >
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Toggle renovation selection
+        function toggleRenovation(key) {
+            if (selectedRenovations.has(key)) {
+                selectedRenovations.delete(key);
+            } else {
+                selectedRenovations.add(key);
+            }
+            updateSelectedCount();
+            renderRenovationCards();
+        }
+
+        // Update selected count
+        function updateSelectedCount() {
+            const count = selectedRenovations.size;
+            document.getElementById('selectedCount').textContent = count;
+            document.getElementById('calculateBtn').disabled = count === 0;
+        }
+
+        // Filter by category
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // Update tab styles
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+                tab.style.color = '#9ca3af';
+            });
+            event.target.classList.add('active');
+            event.target.style.color = '';
+            
+            renderRenovationCards();
+        }
+
+        // Calculate ROI
+        function calculateROI() {
+            if (selectedRenovations.size === 0) return;
+
+            let totalCost = 0;
+            let totalValue = 0;
+            const results = [];
+
+            selectedRenovations.forEach(key => {
+                const data = RENOVATION_DATA[key];
+                totalCost += data.avgCost;
+                totalValue += data.avgValueAdded;
+                results.push({ key, ...data });
+            });
+
+            // Sort by ROI descending
+            results.sort((a, b) => b.roi - a.roi);
+
+            const combinedROI = Math.round((totalValue / totalCost) * 100);
+
+            // Update summary
+            document.getElementById('totalInvestment').textContent = formatCurrency(totalCost);
+            document.getElementById('totalValueAdded').textContent = formatCurrency(totalValue);
+            document.getElementById('combinedROI').textContent = combinedROI + '%';
+
+            // Populate results table
+            const tbody = document.getElementById('resultsTableBody');
+            tbody.innerHTML = '';
+
+            results.forEach(item => {
+                const badgeClass = getROIBadgeClass(item.roi);
+                const row = document.createElement('tr');
+                row.style.cssText = 'border-bottom: 1px solid rgba(255,255,255,0.05);';
+                row.innerHTML = `
+                    <td class="py-4 text-white">${item.name}</td>
+                    <td class="py-4 text-right text-neutral-300">${formatCurrency(item.avgCost)}</td>
+                    <td class="py-4 text-right text-green-400">${formatCurrency(item.avgValueAdded)}</td>
+                    <td class="py-4 text-right">
+                        <span class="roi-badge ${badgeClass}">${item.roi}%</span>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Add total row
+            const totalRow = document.createElement('tr');
+            totalRow.style.cssText = 'border-top: 2px solid #C9A962;';
+            totalRow.innerHTML = `
+                <td class="py-4 font-semibold text-white">TOTAL</td>
+                <td class="py-4 text-right font-semibold" style="color: #C9A962;">${formatCurrency(totalCost)}</td>
+                <td class="py-4 text-right font-semibold text-green-400">${formatCurrency(totalValue)}</td>
+                <td class="py-4 text-right font-semibold" style="color: #C9A962;">${combinedROI}%</td>
+            `;
+            tbody.appendChild(totalRow);
+
+            // Generate recommendations
+            generateRecommendations();
+
+            // Show results section
+            document.getElementById('resultsSection').classList.remove('hidden');
+            
+            // Scroll to results
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Generate smart recommendations
+        function generateRecommendations() {
+            const homeValue = parseCurrency(document.getElementById('homeValue').value);
+            const homeAge = document.getElementById('homeAge').value;
+            const recommendations = document.getElementById('recommendations');
+            recommendations.innerHTML = '';
+
+            // Get age in years for comparison
+            const ageNum = homeAge === '30+' ? 35 : parseInt(homeAge.split('-')[1]);
+
+            // Best ROI recommendations
+            const topROI = Object.entries(RENOVATION_DATA)
+                .filter(([key]) => !selectedRenovations.has(key))
+                .filter(([key, data]) => data.avgCost < homeValue * 0.1) // Max 10% of home value
+                .sort((a, b) => b[1].roi - a[1].roi)
+                .slice(0, 3);
+
+            if (topROI.length > 0) {
+                const section = document.createElement('div');
+                section.className = 'p-5 rounded-xl';
+                section.style.cssText = 'background-color: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2);';
+                section.innerHTML = `
+                    <h4 class="font-medium text-green-400 mb-2">Best ROI Investments You Haven't Selected</h4>
+                    <ul class="space-y-2 text-sm text-neutral-300">
+                        ${topROI.map(([key, data]) => `
+                            <li class="flex items-center gap-2">
+                                <span class="iconify" data-icon="lucide:check" data-width="16" data-height="16" style="color: #22c55e;"></span>
+                                ${data.name} — ${data.roi}% ROI (${formatCurrency(data.avgCost)})
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                recommendations.appendChild(section);
+            }
+
+            // Age-based recommendations
+            if (ageNum >= 20) {
+                const ageRecs = ['vinyl-window-replacement', 'hvac-conversion', 'siding-replacement']
+                    .filter(key => !selectedRenovations.has(key))
+                    .map(key => ({ key, ...RENOVATION_DATA[key] }))
+                    .slice(0, 2);
+
+                if (ageRecs.length > 0) {
+                    const section = document.createElement('div');
+                    section.className = 'p-5 rounded-xl';
+                    section.style.cssText = 'background-color: rgba(201, 169, 98, 0.1); border: 1px solid rgba(201, 169, 98, 0.2);';
+                    section.innerHTML = `
+                        <h4 class="font-medium mb-2" style="color: #C9A962;">Recommended for ${homeAge} Year Old Homes</h4>
+                        <ul class="space-y-2 text-sm text-neutral-300">
+                            ${ageRecs.map(item => `
+                                <li class="flex items-center gap-2">
+                                    <span class="iconify" data-icon="lucide:home" data-width="16" data-height="16" style="color: #C9A962;"></span>
+                                    ${item.name} — Improves efficiency & appeal
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    recommendations.appendChild(section);
+                }
+            }
+
+            // Over-improvement warning
+            const expensiveSelected = Array.from(selectedRenovations)
+                .map(key => RENOVATION_DATA[key])
+                .filter(data => data.avgCost > homeValue * 0.1);
+
+            if (expensiveSelected.length > 0) {
+                const section = document.createElement('div');
+                section.className = 'p-5 rounded-xl';
+                section.style.cssText = 'background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2);';
+                section.innerHTML = `
+                    <h4 class="font-medium text-red-400 mb-2">⚠️ Over-Improvement Warning</h4>
+                    <p class="text-sm text-neutral-300">
+                        The following projects may be over-improvements for a ${formatCurrency(homeValue)} home:
+                    </p>
+                    <ul class="mt-2 space-y-1 text-sm text-neutral-400">
+                        ${expensiveSelected.map(item => `
+                            <li>• ${item.name} (${formatCurrency(item.avgCost)} = ${Math.round(item.avgCost / homeValue * 100)}% of home value)</li>
+                        `).join('')}
+                    </ul>
+                    <p class="text-sm text-neutral-300 mt-2">
+                        Consider if you'll recoup these costs in your market and price range.
+                    </p>
+                `;
+                recommendations.appendChild(section);
+            }
+        }
+
+        // Reset calculator
+        function resetCalculator() {
+            selectedRenovations.clear();
+            updateSelectedCount();
+            renderRenovationCards();
+            document.getElementById('resultsSection').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Format currency inputs
+        document.getElementById('homeValue').addEventListener('blur', function() {
+            const value = parseCurrency(this.value);
+            this.value = value.toLocaleString();
+        });
+        document.getElementById('homeValue').addEventListener('focus', function() {
+            this.value = this.value.replace(/,/g, '');
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Initialize
+        renderRenovationCards();
+    </script>
+
+</body>
+</html>

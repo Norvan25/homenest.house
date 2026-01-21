@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Sale Net Proceeds Calculator | Los Angeles | Homenest</title>
+    <meta name="description" content="Calculate exactly how much you'll walk away with after selling your LA home. Factor in commissions, closing costs, mortgage payoff, and more.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Animation Classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        
+        /* Hover underline */
+        .hover-underline {
+            position: relative;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #C9A962;
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+        
+        /* Button shine effect */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .btn-shine:hover::after {
+            transform: translateX(100%);
+        }
+        
+        /* Glow effect */
+        .glow-gold:hover {
+            box-shadow: 0 0 40px rgba(201, 169, 98, 0.3);
+        }
+        
+        /* Header scroll effect */
+        .header-scrolled {
+            background: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Custom Range Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #3A3A3A;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #C9A962;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(201, 169, 98, 0.5);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #C9A962;
+            cursor: pointer;
+            border: none;
+        }
+        
+        /* Step indicators */
+        .step-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .step-indicator.active {
+            background-color: #C9A962;
+            color: #1A1A1A;
+        }
+        .step-indicator.completed {
+            background-color: #C9A962;
+            color: #1A1A1A;
+        }
+        .step-indicator.inactive {
+            background-color: #3A3A3A;
+            color: #666;
+        }
+        
+        /* Step connector line */
+        .step-line {
+            height: 2px;
+            flex: 1;
+            transition: background-color 0.3s ease;
+        }
+        .step-line.active {
+            background-color: #C9A962;
+        }
+        .step-line.inactive {
+            background-color: #3A3A3A;
+        }
+        
+        /* Result bar chart */
+        .bar-segment {
+            transition: width 0.8s ease-out;
+        }
+        
+        /* Print styles */
+        @media print {
+            header, .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .print-only { display: block !important; }
+        }
+    </style>
+</head>
+<body style="font-family: 'Inter', sans-serif; background-color: #1A1A1A; color: #FFFFFF;" class="overflow-x-hidden">
+
+    <!-- Header -->
+    <header id="header" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: linear-gradient(to bottom, rgba(26,26,26,0.9), transparent); transition: all 0.4s ease;" class="px-6 py-5 md:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-xl md:text-2xl tracking-tight font-medium hover:opacity-80 transition-opacity">Homenest</a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="index.html#about" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">About</a>
+                <a href="index.html#process" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Process</a>
+                <a href="calculators.html" class="text-sm text-white transition-colors hover-underline">Tools</a>
+                <a href="index.html#contact" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Contact</a>
+            </nav>
+            <a href="index.html#contact" style="background-color: #C9A962; color: #1A1A1A;" class="text-xs font-semibold px-5 py-2.5 rounded-full hover:opacity-90 transition-all hover:scale-105 btn-shine">Get in Touch</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-28 pb-16 md:pt-36 md:pb-24 px-6 md:px-12">
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Back Link -->
+            <a href="calculators.html" class="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors mb-8 no-print">
+                <span class="iconify" data-icon="lucide:arrow-left" data-width="16" data-height="16"></span>
+                <span class="text-sm">All Calculators</span>
+            </a>
+
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <span style="color: #C9A962;" class="text-xs font-semibold tracking-widest uppercase mb-4 block">Seller Tool</span>
+                <h1 style="font-family: 'Playfair Display', serif;" class="text-3xl md:text-4xl lg:text-5xl font-medium leading-tight tracking-tight text-white mb-4">
+                    Net Proceeds Calculator
+                </h1>
+                <p class="text-neutral-400 text-base max-w-lg mx-auto">
+                    See exactly how much you'll walk away with after selling your Los Angeles home.
+                </p>
+            </div>
+
+            <!-- Step Indicators -->
+            <div class="flex items-center justify-center gap-2 mb-12 no-print" id="stepIndicators">
+                <div class="step-indicator active" id="step1Indicator">1</div>
+                <div class="step-line inactive" id="line1"></div>
+                <div class="step-indicator inactive" id="step2Indicator">2</div>
+                <div class="step-line inactive" id="line2"></div>
+                <div class="step-indicator inactive" id="step3Indicator">3</div>
+            </div>
+
+            <!-- Calculator Container -->
+            <div style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-2xl p-6 md:p-10">
+                
+                <!-- Step 1: Property Details -->
+                <div id="step1" class="calculator-step">
+                    <h2 style="font-family: 'Playfair Display', serif;" class="text-xl md:text-2xl font-medium text-white mb-6">Property Details</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Sale Price -->
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Expected Sale Price *</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
+                                <input 
+                                    type="text" 
+                                    id="salePrice" 
+                                    value="1,000,000"
+                                    style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                    class="w-full pl-8 pr-4 py-4 rounded-xl text-lg text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                    placeholder="1,000,000"
+                                >
+                            </div>
+                        </div>
+                        
+                        <!-- City -->
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">City</label>
+                            <div class="relative">
+                                <select 
+                                    id="city" 
+                                    style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                    class="w-full px-4 py-4 rounded-xl text-base text-white outline-none focus:border-[#C9A962] transition-all appearance-none cursor-pointer"
+                                >
+                                    <option value="los-angeles">Los Angeles</option>
+                                    <option value="beverly-hills">Beverly Hills</option>
+                                    <option value="santa-monica">Santa Monica</option>
+                                    <option value="glendale">Glendale</option>
+                                    <option value="pasadena">Pasadena</option>
+                                    <option value="long-beach">Long Beach</option>
+                                    <option value="other">Other LA County</option>
+                                </select>
+                                <span class="iconify absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" data-icon="lucide:chevron-down" data-width="20" data-height="20" style="color: #A0A0A0;"></span>
+                            </div>
+                        </div>
+
+                        <button 
+                            onclick="goToStep(2)" 
+                            style="background-color: #C9A962; color: #1A1A1A;" 
+                            class="w-full flex items-center justify-center gap-2 text-sm font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.02] btn-shine glow-gold mt-8"
+                        >
+                            Next: Costs & Payoffs
+                            <span class="iconify" data-icon="lucide:arrow-right" data-width="16" data-height="16"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Costs -->
+                <div id="step2" class="calculator-step hidden">
+                    <h2 style="font-family: 'Playfair Display', serif;" class="text-xl md:text-2xl font-medium text-white mb-6">Costs & Payoffs</h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Commission Slider -->
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium">Agent Commission</label>
+                                <span id="commissionValue" class="text-lg font-semibold" style="color: #C9A962;">5%</span>
+                            </div>
+                            <input 
+                                type="range" 
+                                id="commission" 
+                                min="0" 
+                                max="6" 
+                                step="0.5" 
+                                value="5"
+                                class="w-full"
+                                oninput="updateCommissionDisplay()"
+                            >
+                            <div class="flex justify-between text-xs text-neutral-500 mt-2">
+                                <span>0%</span>
+                                <span>6%</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Mortgage Balance -->
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Remaining Mortgage Balance</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
+                                <input 
+                                    type="text" 
+                                    id="mortgageBalance" 
+                                    value="0"
+                                    style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                    class="w-full pl-8 pr-4 py-4 rounded-xl text-base text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                    placeholder="0"
+                                >
+                            </div>
+                            <p class="text-xs text-neutral-500 mt-2">Leave at 0 if owned free and clear</p>
+                        </div>
+                        
+                        <!-- Repairs/Credits -->
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Estimated Repairs / Seller Credits</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
+                                <input 
+                                    type="text" 
+                                    id="repairs" 
+                                    value="0"
+                                    style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                    class="w-full pl-8 pr-4 py-4 rounded-xl text-base text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                    placeholder="0"
+                                >
+                            </div>
+                        </div>
+                        
+                        <!-- HOA Balance -->
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">HOA Balance Due (if applicable)</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
+                                <input 
+                                    type="text" 
+                                    id="hoaBalance" 
+                                    value="0"
+                                    style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.1);" 
+                                    class="w-full pl-8 pr-4 py-4 rounded-xl text-base text-white placeholder-neutral-600 outline-none focus:border-[#C9A962] transition-all"
+                                    placeholder="0"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 mt-8">
+                            <button 
+                                onclick="goToStep(1)" 
+                                style="border: 1px solid rgba(255,255,255,0.2);" 
+                                class="flex-1 flex items-center justify-center gap-2 text-sm font-medium px-6 py-4 rounded-full text-white hover:bg-white/5 transition-all"
+                            >
+                                <span class="iconify" data-icon="lucide:arrow-left" data-width="16" data-height="16"></span>
+                                Back
+                            </button>
+                            <button 
+                                onclick="calculateNetProceeds()" 
+                                style="background-color: #C9A962; color: #1A1A1A;" 
+                                class="flex-1 flex items-center justify-center gap-2 text-sm font-semibold px-6 py-4 rounded-full transition-all hover:scale-[1.02] btn-shine glow-gold"
+                            >
+                                Calculate
+                                <span class="iconify" data-icon="lucide:calculator" data-width="16" data-height="16"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Results -->
+                <div id="step3" class="calculator-step hidden">
+                    <div class="text-center mb-8">
+                        <span class="text-xs uppercase tracking-widest text-neutral-500 font-medium mb-2 block">Your Estimated Net Proceeds</span>
+                        <div style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-4xl md:text-5xl lg:text-6xl font-medium" id="netProceedsAmount">$0</div>
+                        <p class="text-neutral-400 mt-2"><span id="netProceedsPercent">0</span>% of sale price</p>
+                    </div>
+
+                    <!-- Visual Bar Chart -->
+                    <div class="mb-8">
+                        <div class="h-8 rounded-full overflow-hidden flex" style="background-color: #1A1A1A;">
+                            <div id="barNetProceeds" class="bar-segment h-full" style="background-color: #C9A962; width: 0%;"></div>
+                            <div id="barCommission" class="bar-segment h-full" style="background-color: #4A4A4A; width: 0%;"></div>
+                            <div id="barClosingCosts" class="bar-segment h-full" style="background-color: #3A3A3A; width: 0%;"></div>
+                            <div id="barMortgage" class="bar-segment h-full" style="background-color: #2A2A2A; width: 0%;"></div>
+                        </div>
+                        <div class="flex flex-wrap gap-4 mt-4 text-xs">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full" style="background-color: #C9A962;"></div>
+                                <span class="text-neutral-400">Net Proceeds</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full" style="background-color: #4A4A4A;"></div>
+                                <span class="text-neutral-400">Commission</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full" style="background-color: #3A3A3A;"></div>
+                                <span class="text-neutral-400">Closing Costs</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full" style="background-color: #2A2A2A;"></div>
+                                <span class="text-neutral-400">Mortgage/Other</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown -->
+                    <div style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-xl p-6 mb-8">
+                        <h3 class="text-sm font-semibold uppercase tracking-widest text-neutral-500 mb-4">Breakdown</h3>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-300">Sale Price</span>
+                                <span class="font-medium text-white" id="resultSalePrice">$0</span>
+                            </div>
+                            <div style="border-top: 1px solid rgba(255,255,255,0.08);"></div>
+                            
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-400">Agent Commission (<span id="resultCommissionRate">5</span>%)</span>
+                                <span class="text-red-400" id="resultCommission">-$0</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-400">Escrow & Title</span>
+                                <span class="text-red-400" id="resultEscrowTitle">-$0</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-400">Transfer Taxes</span>
+                                <span class="text-red-400" id="resultTransferTax">-$0</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-400">Other Closing Costs</span>
+                                <span class="text-red-400" id="resultOtherCosts">-$0</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-400">Mortgage Payoff</span>
+                                <span class="text-red-400" id="resultMortgage">-$0</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-400">Repairs / Credits</span>
+                                <span class="text-red-400" id="resultRepairs">-$0</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-400">HOA Balance</span>
+                                <span class="text-red-400" id="resultHOA">-$0</span>
+                            </div>
+                            
+                            <div style="border-top: 1px solid rgba(255,255,255,0.08);"></div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-neutral-300">Total Deductions</span>
+                                <span class="text-red-400 font-medium" id="resultTotalDeductions">-$0</span>
+                            </div>
+                            
+                            <div style="border-top: 2px solid #C9A962;"></div>
+                            <div class="flex justify-between items-center py-3">
+                                <span class="text-white font-semibold text-lg">NET PROCEEDS</span>
+                                <span class="font-bold text-xl" style="color: #C9A962;" id="resultNetProceeds">$0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- What If Slider -->
+                    <div style="background-color: #1A1A1A; border: 1px solid rgba(255,255,255,0.08);" class="rounded-xl p-6 mb-8 no-print">
+                        <h3 class="text-sm font-semibold uppercase tracking-widest text-neutral-500 mb-4">What If?</h3>
+                        <p class="text-neutral-400 text-sm mb-4">Adjust the sale price to see how it affects your net proceeds:</p>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-neutral-300">Sale Price</span>
+                            <span id="whatIfPrice" class="text-lg font-semibold text-white">$1,000,000</span>
+                        </div>
+                        <input 
+                            type="range" 
+                            id="whatIfSlider" 
+                            min="0" 
+                            max="0" 
+                            step="10000" 
+                            value="0"
+                            class="w-full"
+                            oninput="updateWhatIf()"
+                        >
+                        <div class="flex justify-between text-xs text-neutral-500 mt-2">
+                            <span id="whatIfMin">$0</span>
+                            <span id="whatIfMax">$0</span>
+                        </div>
+                    </div>
+
+                    <!-- CTAs -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 no-print">
+                        <button 
+                            onclick="window.print()" 
+                            style="border: 1px solid rgba(255,255,255,0.2);" 
+                            class="flex items-center justify-center gap-2 text-sm font-medium px-6 py-4 rounded-full text-white hover:bg-white/5 transition-all"
+                        >
+                            <span class="iconify" data-icon="lucide:printer" data-width="18" data-height="18"></span>
+                            Print Report
+                        </button>
+                        <a 
+                            href="index.html#contact" 
+                            style="background-color: #C9A962; color: #1A1A1A;" 
+                            class="flex items-center justify-center gap-2 text-sm font-semibold px-6 py-4 rounded-full transition-all hover:scale-[1.02] btn-shine glow-gold"
+                        >
+                            <span class="iconify" data-icon="lucide:phone" data-width="18" data-height="18"></span>
+                            Request Free CMA
+                        </a>
+                    </div>
+
+                    <!-- Start Over -->
+                    <button 
+                        onclick="resetCalculator()" 
+                        class="w-full text-center text-neutral-400 hover:text-white transition-colors mt-6 text-sm no-print"
+                    >
+                        ← Start Over
+                    </button>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <p class="text-neutral-500 text-xs text-center mt-8 leading-relaxed">
+                * These calculations are estimates based on typical Los Angeles closing costs and should not be considered financial or legal advice. Actual costs may vary based on your specific transaction, property location, and current market conditions. Consult with a licensed real estate professional for accurate assessments.
+            </p>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background-color: #141414; border-top: 1px solid rgba(255,255,255,0.05);" class="py-12 px-6 md:px-12 no-print">
+        <div class="max-w-7xl mx-auto text-center">
+            <a href="index.html" style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-xl tracking-tight font-medium mb-2 inline-block hover:opacity-80 transition-opacity">Homenest</a>
+            <p class="text-neutral-600 text-xs">© 2025 Homenest by Suzanna Saharyan. Century 21 Real Estate.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // LA-specific closing costs
+        const LA_CLOSING_COSTS = {
+            escrowFee: 0.002,           // ~0.2% of sale price
+            titleInsurance: 0.005,       // ~0.5% (seller pays buyer's policy in LA)
+            transferTax: 0.0011,         // $1.10 per $1,000 (LA city)
+            countyTax: 0.00055,          // $0.55 per $1,000 (LA county)
+            notaryFees: 150,             // flat
+            documentPrep: 200,           // flat
+            homeWarranty: 500,           // optional, common in LA
+            propertyTaxProration: 0.005, // ~0.5% estimate
+        };
+
+        let currentStep = 1;
+        let calculatedResults = null;
+
+        // Format currency
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0,
+            }).format(num);
+        }
+
+        // Parse currency string to number
+        function parseCurrency(str) {
+            return parseInt(str.replace(/[^0-9]/g, ''), 10) || 0;
+        }
+
+        // Format input on blur
+        function formatCurrencyInput(input) {
+            const value = parseCurrency(input.value);
+            input.value = value.toLocaleString();
+        }
+
+        // Setup currency inputs
+        document.querySelectorAll('#salePrice, #mortgageBalance, #repairs, #hoaBalance').forEach(input => {
+            input.addEventListener('blur', () => formatCurrencyInput(input));
+            input.addEventListener('focus', () => {
+                input.value = input.value.replace(/,/g, '');
+            });
+        });
+
+        // Update commission display
+        function updateCommissionDisplay() {
+            const value = document.getElementById('commission').value;
+            document.getElementById('commissionValue').textContent = value + '%';
+        }
+
+        // Go to step
+        function goToStep(step) {
+            // Validate step 1
+            if (step === 2 && currentStep === 1) {
+                const salePrice = parseCurrency(document.getElementById('salePrice').value);
+                if (salePrice <= 0) {
+                    alert('Please enter a valid sale price');
+                    return;
+                }
+            }
+
+            // Hide all steps
+            document.querySelectorAll('.calculator-step').forEach(el => el.classList.add('hidden'));
+            
+            // Show target step
+            document.getElementById('step' + step).classList.remove('hidden');
+            
+            // Update indicators
+            for (let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById('step' + i + 'Indicator');
+                if (i < step) {
+                    indicator.className = 'step-indicator completed';
+                    indicator.innerHTML = '<span class="iconify" data-icon="lucide:check" data-width="18" data-height="18"></span>';
+                } else if (i === step) {
+                    indicator.className = 'step-indicator active';
+                    indicator.textContent = i;
+                } else {
+                    indicator.className = 'step-indicator inactive';
+                    indicator.textContent = i;
+                }
+            }
+            
+            // Update lines
+            document.getElementById('line1').className = step > 1 ? 'step-line active' : 'step-line inactive';
+            document.getElementById('line2').className = step > 2 ? 'step-line active' : 'step-line inactive';
+            
+            currentStep = step;
+            
+            // Scroll to top of calculator
+            document.querySelector('.max-w-3xl').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Calculate net proceeds
+        function calculateNetProceeds() {
+            const salePrice = parseCurrency(document.getElementById('salePrice').value);
+            const commissionRate = parseFloat(document.getElementById('commission').value);
+            const mortgageBalance = parseCurrency(document.getElementById('mortgageBalance').value);
+            const repairs = parseCurrency(document.getElementById('repairs').value);
+            const hoaBalance = parseCurrency(document.getElementById('hoaBalance').value);
+
+            // Commission
+            const commission = salePrice * (commissionRate / 100);
+
+            // Closing costs (LA specific)
+            const escrowFee = salePrice * LA_CLOSING_COSTS.escrowFee;
+            const titleInsurance = salePrice * LA_CLOSING_COSTS.titleInsurance;
+            const transferTax = salePrice * LA_CLOSING_COSTS.transferTax;
+            const countyTax = salePrice * LA_CLOSING_COSTS.countyTax;
+            const fixedCosts = LA_CLOSING_COSTS.notaryFees + LA_CLOSING_COSTS.documentPrep;
+            const homeWarranty = LA_CLOSING_COSTS.homeWarranty;
+            const propertyTaxProration = salePrice * LA_CLOSING_COSTS.propertyTaxProration;
+
+            const escrowTitle = escrowFee + titleInsurance;
+            const transferTaxTotal = transferTax + countyTax;
+            const otherCosts = fixedCosts + homeWarranty + propertyTaxProration;
+
+            const totalClosingCosts = escrowTitle + transferTaxTotal + otherCosts;
+
+            // Total deductions
+            const totalDeductions = commission + totalClosingCosts + mortgageBalance + repairs + hoaBalance;
+
+            // Net proceeds
+            const netProceeds = salePrice - totalDeductions;
+            const netProceedsPercent = ((netProceeds / salePrice) * 100).toFixed(1);
+
+            // Store results
+            calculatedResults = {
+                salePrice,
+                commissionRate,
+                commission,
+                escrowTitle,
+                transferTaxTotal,
+                otherCosts,
+                totalClosingCosts,
+                mortgageBalance,
+                repairs,
+                hoaBalance,
+                totalDeductions,
+                netProceeds,
+                netProceedsPercent,
+            };
+
+            // Display results
+            displayResults(calculatedResults);
+
+            // Setup what-if slider
+            setupWhatIfSlider(salePrice);
+
+            // Go to results
+            goToStep(3);
+        }
+
+        // Display results
+        function displayResults(results) {
+            document.getElementById('netProceedsAmount').textContent = formatCurrency(results.netProceeds);
+            document.getElementById('netProceedsPercent').textContent = results.netProceedsPercent;
+
+            document.getElementById('resultSalePrice').textContent = formatCurrency(results.salePrice);
+            document.getElementById('resultCommissionRate').textContent = results.commissionRate;
+            document.getElementById('resultCommission').textContent = '-' + formatCurrency(results.commission);
+            document.getElementById('resultEscrowTitle').textContent = '-' + formatCurrency(results.escrowTitle);
+            document.getElementById('resultTransferTax').textContent = '-' + formatCurrency(results.transferTaxTotal);
+            document.getElementById('resultOtherCosts').textContent = '-' + formatCurrency(results.otherCosts);
+            document.getElementById('resultMortgage').textContent = '-' + formatCurrency(results.mortgageBalance);
+            document.getElementById('resultRepairs').textContent = '-' + formatCurrency(results.repairs);
+            document.getElementById('resultHOA').textContent = '-' + formatCurrency(results.hoaBalance);
+            document.getElementById('resultTotalDeductions').textContent = '-' + formatCurrency(results.totalDeductions);
+            document.getElementById('resultNetProceeds').textContent = formatCurrency(results.netProceeds);
+
+            // Update bar chart
+            const netPercent = (results.netProceeds / results.salePrice) * 100;
+            const commissionPercent = (results.commission / results.salePrice) * 100;
+            const closingPercent = (results.totalClosingCosts / results.salePrice) * 100;
+            const otherPercent = ((results.mortgageBalance + results.repairs + results.hoaBalance) / results.salePrice) * 100;
+
+            setTimeout(() => {
+                document.getElementById('barNetProceeds').style.width = netPercent + '%';
+                document.getElementById('barCommission').style.width = commissionPercent + '%';
+                document.getElementById('barClosingCosts').style.width = closingPercent + '%';
+                document.getElementById('barMortgage').style.width = otherPercent + '%';
+            }, 100);
+        }
+
+        // Setup what-if slider
+        function setupWhatIfSlider(basePrice) {
+            const min = Math.max(0, basePrice - 200000);
+            const max = basePrice + 200000;
+            
+            const slider = document.getElementById('whatIfSlider');
+            slider.min = min;
+            slider.max = max;
+            slider.value = basePrice;
+            
+            document.getElementById('whatIfMin').textContent = formatCurrency(min);
+            document.getElementById('whatIfMax').textContent = formatCurrency(max);
+            document.getElementById('whatIfPrice').textContent = formatCurrency(basePrice);
+        }
+
+        // Update what-if
+        function updateWhatIf() {
+            const newPrice = parseInt(document.getElementById('whatIfSlider').value);
+            document.getElementById('whatIfPrice').textContent = formatCurrency(newPrice);
+
+            // Recalculate with new price
+            const commissionRate = calculatedResults.commissionRate;
+            const commission = newPrice * (commissionRate / 100);
+            
+            const escrowFee = newPrice * LA_CLOSING_COSTS.escrowFee;
+            const titleInsurance = newPrice * LA_CLOSING_COSTS.titleInsurance;
+            const transferTax = newPrice * LA_CLOSING_COSTS.transferTax;
+            const countyTax = newPrice * LA_CLOSING_COSTS.countyTax;
+            const fixedCosts = LA_CLOSING_COSTS.notaryFees + LA_CLOSING_COSTS.documentPrep;
+            const homeWarranty = LA_CLOSING_COSTS.homeWarranty;
+            const propertyTaxProration = newPrice * LA_CLOSING_COSTS.propertyTaxProration;
+
+            const totalClosingCosts = escrowFee + titleInsurance + transferTax + countyTax + fixedCosts + homeWarranty + propertyTaxProration;
+            const totalDeductions = commission + totalClosingCosts + calculatedResults.mortgageBalance + calculatedResults.repairs + calculatedResults.hoaBalance;
+            const netProceeds = newPrice - totalDeductions;
+            const netProceedsPercent = ((netProceeds / newPrice) * 100).toFixed(1);
+
+            // Update display
+            document.getElementById('netProceedsAmount').textContent = formatCurrency(netProceeds);
+            document.getElementById('netProceedsPercent').textContent = netProceedsPercent;
+
+            // Update bar
+            const netPercent = (netProceeds / newPrice) * 100;
+            document.getElementById('barNetProceeds').style.width = netPercent + '%';
+        }
+
+        // Reset calculator
+        function resetCalculator() {
+            document.getElementById('salePrice').value = '1,000,000';
+            document.getElementById('commission').value = 5;
+            document.getElementById('mortgageBalance').value = '0';
+            document.getElementById('repairs').value = '0';
+            document.getElementById('hoaBalance').value = '0';
+            updateCommissionDisplay();
+            goToStep(1);
+        }
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+    </script>
+
+</body>
+</html>

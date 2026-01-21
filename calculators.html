@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Home Tools | Homenest - Los Angeles Real Estate</title>
+    <meta name="description" content="Free real estate calculators for Los Angeles homeowners. Calculate net proceeds, renovation ROI, and home value estimates.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Animation Classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        
+        /* Hover underline */
+        .hover-underline {
+            position: relative;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #C9A962;
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+        
+        /* Button shine effect */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .btn-shine:hover::after {
+            transform: translateX(100%);
+        }
+        
+        /* Card hover */
+        .calculator-card {
+            transition: all 0.3s ease;
+        }
+        .calculator-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(201, 169, 98, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Glow effect */
+        .glow-gold:hover {
+            box-shadow: 0 0 40px rgba(201, 169, 98, 0.3);
+        }
+        
+        /* Header scroll effect */
+        .header-scrolled {
+            background: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body style="font-family: 'Inter', sans-serif; background-color: #1A1A1A; color: #FFFFFF;" class="overflow-x-hidden">
+
+    <!-- Header -->
+    <header id="header" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: linear-gradient(to bottom, rgba(26,26,26,0.9), transparent); transition: all 0.4s ease;" class="px-6 py-5 md:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-xl md:text-2xl tracking-tight font-medium hover:opacity-80 transition-opacity">Homenest</a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="index.html#about" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">About</a>
+                <a href="index.html#process" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Process</a>
+                <a href="calculators.html" class="text-sm text-white transition-colors hover-underline">Tools</a>
+                <a href="index.html#contact" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Contact</a>
+            </nav>
+            <a href="index.html#contact" style="background-color: #C9A962; color: #1A1A1A;" class="text-xs font-semibold px-5 py-2.5 rounded-full hover:opacity-90 transition-all hover:scale-105 btn-shine">Get in Touch</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 md:pt-40 md:pb-24 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto text-center">
+            <span style="color: #C9A962;" class="text-xs font-semibold tracking-widest uppercase mb-4 block fade-up">Free Home Tools</span>
+            <h1 style="font-family: 'Playfair Display', serif;" class="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight tracking-tight text-white mb-6 fade-up stagger-1">
+                Make Smarter Decisions<br>About Your Home<span style="color: #C9A962;">.</span>
+            </h1>
+            <p class="text-neutral-300 text-base md:text-lg font-light leading-relaxed max-w-xl mx-auto fade-up stagger-2">
+                Use our free calculators to understand your home's value, plan renovations, and see exactly what you'll walk away with when selling.
+            </p>
+        </div>
+    </section>
+
+    <!-- Calculator Cards -->
+    <section style="background-color: #1A1A1A;" class="py-16 md:py-24 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Net Proceeds Calculator -->
+                <a href="net-proceeds.html" style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="calculator-card p-8 md:p-10 rounded-2xl block fade-up stagger-1">
+                    <div style="background-color: rgba(201,169,98,0.1);" class="w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                        <span class="iconify" data-icon="lucide:banknote" data-width="32" data-height="32" style="color: #C9A962;"></span>
+                    </div>
+                    <h3 style="font-family: 'Playfair Display', serif;" class="text-2xl font-medium text-white mb-3">Net Proceeds Calculator</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-6">See exactly how much you'll walk away with after selling your LA home. Factor in commissions, closing costs, and mortgage payoff.</p>
+                    <div class="flex items-center gap-2 text-sm font-medium" style="color: #C9A962;">
+                        Calculate Now
+                        <span class="iconify" data-icon="lucide:arrow-right" data-width="16" data-height="16"></span>
+                    </div>
+                </a>
+
+                <!-- Renovation ROI Calculator -->
+                <a href="renovation-roi.html" style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="calculator-card p-8 md:p-10 rounded-2xl block fade-up stagger-2">
+                    <div style="background-color: rgba(201,169,98,0.1);" class="w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                        <span class="iconify" data-icon="lucide:hammer" data-width="32" data-height="32" style="color: #C9A962;"></span>
+                    </div>
+                    <h3 style="font-family: 'Playfair Display', serif;" class="text-2xl font-medium text-white mb-3">Renovation ROI Calculator</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-6">Discover which home improvements give the best return on investment. Data-driven recommendations for maximizing value.</p>
+                    <div class="flex items-center gap-2 text-sm font-medium" style="color: #C9A962;">
+                        Calculate Now
+                        <span class="iconify" data-icon="lucide:arrow-right" data-width="16" data-height="16"></span>
+                    </div>
+                </a>
+
+                <!-- Home Value Estimator -->
+                <a href="home-value.html" style="background-color: #2A2A2A; border: 1px solid rgba(255,255,255,0.08);" class="calculator-card p-8 md:p-10 rounded-2xl block fade-up stagger-3">
+                    <div style="background-color: rgba(201,169,98,0.1);" class="w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                        <span class="iconify" data-icon="lucide:home" data-width="32" data-height="32" style="color: #C9A962;"></span>
+                    </div>
+                    <h3 style="font-family: 'Playfair Display', serif;" class="text-2xl font-medium text-white mb-3">Home Value Estimator</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-6">Get an instant estimate of your LA home's value based on location, size, and features. Request a free CMA for precision.</p>
+                    <div class="flex items-center gap-2 text-sm font-medium" style="color: #C9A962;">
+                        Estimate Now
+                        <span class="iconify" data-icon="lucide:arrow-right" data-width="16" data-height="16"></span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background-color: #242424;" class="py-20 md:py-28 px-6 md:px-12">
+        <div class="max-w-3xl mx-auto text-center fade-up">
+            <h2 style="font-family: 'Playfair Display', serif;" class="text-2xl md:text-4xl font-medium tracking-tight text-white mb-6">Need Personalized Advice?</h2>
+            <p class="text-neutral-300 text-base leading-relaxed mb-10">
+                These tools are a great starting point, but every home is unique. Get expert guidance tailored to your specific situation — no obligation, just honest advice.
+            </p>
+            <a href="index.html#contact" style="background-color: #C9A962; color: #1A1A1A;" class="inline-flex items-center justify-center gap-2 text-sm font-semibold px-8 py-4 rounded-full transition-all hover:scale-105 btn-shine glow-gold">
+                <span class="iconify" data-icon="lucide:phone" data-width="18" data-height="18"></span>
+                Schedule Free Consultation
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background-color: #141414; border-top: 1px solid rgba(255,255,255,0.05);" class="py-16 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col items-center text-center mb-12">
+                <a href="index.html" style="font-family: 'Playfair Display', serif; color: #C9A962;" class="text-2xl md:text-3xl tracking-tight font-medium mb-3 hover:opacity-80 transition-opacity">Homenest</a>
+                <p class="text-neutral-500 text-sm">Your Home Journey, Guided.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-6 md:gap-8 mb-10">
+                <a href="index.html" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Home</a>
+                <a href="index.html#about" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">About</a>
+                <a href="calculators.html" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Tools</a>
+                <a href="index.html#contact" class="text-sm text-neutral-400 hover:text-white transition-colors hover-underline">Contact</a>
+            </div>
+
+            <div class="flex justify-center gap-4 mb-10">
+                <a href="#" style="background-color: rgba(255,255,255,0.05);" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#C9A962] transition-all duration-300 hover:scale-110 group">
+                    <span class="iconify group-hover:text-[#1A1A1A] transition-colors" data-icon="lucide:instagram" data-width="18" data-height="18" style="color: #A0A0A0;"></span>
+                </a>
+                <a href="#" style="background-color: rgba(255,255,255,0.05);" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#C9A962] transition-all duration-300 hover:scale-110 group">
+                    <span class="iconify group-hover:text-[#1A1A1A] transition-colors" data-icon="lucide:video" data-width="18" data-height="18" style="color: #A0A0A0;"></span>
+                </a>
+            </div>
+
+            <div class="text-center">
+                <p class="text-neutral-600 text-xs">© 2025 Homenest by Suzanna Saharyan. Century 21 Real Estate.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Animations -->
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+    </script>
+
+</body>
+</html>
